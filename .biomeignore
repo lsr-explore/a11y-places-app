@@ -1,0 +1,13 @@
+node_modules/
+build/
+dist/
+coverage/
+storybook-static/
+.storybook/
+src/stories/
+*.stories.tsx
+*.stories.ts
+*.test.tsx
+*.test.ts
+src/__mocks__/
+src/setupTests.ts

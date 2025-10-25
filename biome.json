@@ -1,0 +1,82 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.2.7/schema.json",
+	"vcs": {
+		"enabled": true,
+		"clientKind": "git",
+		"useIgnoreFile": true
+	},
+	"files": {
+		"ignoreUnknown": false
+	},
+	"formatter": {
+		"enabled": true,
+		"indentStyle": "space",
+		"indentWidth": 2,
+		"lineWidth": 100
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"a11y": {
+				"recommended": true,
+				"noAccessKey": "error",
+				"noAriaHiddenOnFocusable": "error",
+				"noAriaUnsupportedElements": "error",
+				"noAutofocus": "warn",
+				"noDistractingElements": "error",
+				"noHeaderScope": "error",
+				"noInteractiveElementToNoninteractiveRole": "error",
+				"noNoninteractiveElementToInteractiveRole": "error",
+				"noNoninteractiveTabindex": "error",
+				"noPositiveTabindex": "error",
+				"noRedundantAlt": "error",
+				"noRedundantRoles": "error",
+				"useAltText": "error",
+				"useAnchorContent": "error",
+				"useAriaActivedescendantWithTabindex": "error",
+				"useAriaPropsForRole": "error",
+				"useButtonType": "error",
+				"useHeadingContent": "error",
+				"useHtmlLang": "error",
+				"useIframeTitle": "error",
+				"useKeyWithClickEvents": "warn",
+				"useKeyWithMouseEvents": "warn",
+				"useMediaCaption": "warn",
+				"useValidAnchor": "error",
+				"useValidAriaProps": "error",
+				"useValidAriaRole": "error",
+				"useValidAriaValues": "error",
+				"useValidLang": "error"
+			},
+			"complexity": {
+				"recommended": true
+			},
+			"correctness": {
+				"recommended": true,
+				"useExhaustiveDependencies": "warn"
+			},
+			"style": {
+				"recommended": true
+			},
+			"suspicious": {
+				"recommended": true
+			}
+		}
+	},
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "single",
+			"trailingCommas": "es5",
+			"semicolons": "always"
+		}
+	},
+	"assist": {
+		"enabled": true,
+		"actions": {
+			"source": {
+				"organizeImports": "on"
+			}
+		}
+	}
+}
