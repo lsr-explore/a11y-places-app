@@ -21,6 +21,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
 import type { Place } from '../types/Place';
 import { deletePlace, getPlaces } from '../utils/storage';
+import { useStorage } from '../utils/storageApi';
 
 const Places: React.FC = () => {
   const [places, setPlaces] = useState<Place[]>([]);
@@ -28,6 +29,8 @@ const Places: React.FC = () => {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
+  const { getPlaces, deletePlace } = useStorage();
+
   const editButtonRefs = useRef<{ [key: string]: React.RefObject<HTMLButtonElement | null> }>({});
   const addButtonRef = useRef<HTMLButtonElement>(null);
 
