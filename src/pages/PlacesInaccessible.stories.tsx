@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { Preferences } from '@capacitor/preferences';
 import type { Place } from '../types/Place';
+import { StorageAPI, StorageContext } from '../utils/storageApi';
 import PlacesInaccessible from './PlacesInaccessible';
 
 // Sample places data for stories
@@ -39,12 +41,21 @@ const WithEmptyStorage = (Story: any) => {
   return <Story />;
 };
 
-// Decorator to mock storage with sample places
-const WithMockPlaces = (Story: any) => {
-  // Set up mock immediately before rendering
-  Preferences.get = async () => Promise.resolve({ value: JSON.stringify(mockPlaces) });
-  return <Story />;
-};
+function mockApi(seed: Place[] = []): StorageAPI {
+  let data = [...seed];
+  return {
+    getPlaces: async () => Promise.resolve([...data]),
+    deletePlace: async (id) => {
+      data = data.filter((p) => p.id !== id);
+    },
+  };
+}
+
+const withMockPlaces = (api: StorageAPI) => (Story: any) => (
+  <StorageContext.Provider value={api}>
+    <Story />
+  </StorageContext.Provider>
+);
 
 const meta: Meta<typeof PlacesInaccessible> = {
   title: 'Pages/PlacesInaccessible',
@@ -109,7 +120,7 @@ export const EmptyList: Story = {
 
 export const WithPlaces: Story = {
   name: 'Places List with Items (Inaccessible)',
-  decorators: [WithMockPlaces],
+  decorators: [withMockPlaces(mockApi(mockPlaces))],
   parameters: {
     docs: {
       description: {

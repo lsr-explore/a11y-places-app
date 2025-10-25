@@ -18,10 +18,12 @@ import { useNavigate } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
 import type { Place } from '../types/Place';
 import { deletePlace, getPlaces } from '../utils/storage';
+import { useStorage } from '../utils/storageApi';
 
 const PlacesInaccessible: React.FC = () => {
   const [places, setPlaces] = useState<Place[]>([]);
   const navigate = useNavigate();
+  const { getPlaces, deletePlace } = useStorage();
 
   const breadcrumbItems = [{ label: 'Home', path: '/' }, { label: 'Places (Inaccessible)' }];
 
@@ -86,8 +88,10 @@ const PlacesInaccessible: React.FC = () => {
                     }}
                   />
                   {/* Issue #3: Delete button is a div with click handler - not keyboard accessible */}
+                  {/* Adding role="button" makes it detectable by axe-core but still inaccessible */}
                   {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
                   <div
+                    role="button"
                     onClick={() => handleDelete(place.id)}
                     style={{
                       cursor: 'pointer',

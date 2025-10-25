@@ -5,19 +5,11 @@ import { mockCapacitorStorage } from './helpers/storageHelpers';
 
 test.describe('Places Page (Inaccessible)', () => {
   test.beforeEach(async ({ page }) => {
-    // Start with a clean slate
+    // Set up mock storage before navigating
+    await mockCapacitorStorage(page, mockPlaces);
     await page.goto('/places-inaccessible');
-
-    // Add mock places using the app's own UI
-    for (const place of mockPlaces) {
-      await page.getByRole('button', { name: /add place/i }).click();
-      await page.getByLabel(/name/i).fill(place.name);
-      await page.getByLabel(/places/i).fill(place.places);
-      // Submit the form
-      await page.getByRole('button', { name: /add place/i, exact: false }).last().click();
-      // Wait to return to places list
-      await page.waitForURL('**/places-inaccessible');
-    }
+    // Wait for the page to load and render
+    await page.waitForSelector('h1:has-text("Places")');
   });
 
   test('should have automatically detectable accessibility issues', async ({ page }) => {

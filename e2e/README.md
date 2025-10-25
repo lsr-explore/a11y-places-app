@@ -62,6 +62,44 @@ pnpm run test:e2e:debug
 pnpm run test:e2e:report
 ```
 
+## Running tests - variations
+
+### Using the test name (grep pattern)
+
+```bash
+pnpm exec playwright test PlacesInaccessible.spec.ts -g "should have automatically detectable"
+```
+
+### Run the entire PlacesInaccessible test file
+
+```bash
+pnpm exec playwright test PlacesInaccessible.spec.ts
+```
+
+### Run with a specific browser
+
+```bash
+pnpm exec playwright test PlacesInaccessible.spec.ts --project=chromium
+```
+
+### Run with UI mode (interactive, great for debugging)
+
+```bash
+pnpm exec playwright test PlacesInaccessible.spec.ts --ui
+```
+
+### Run in headed mode (see the browser)
+
+```bash
+pnpm exec playwright test PlacesInaccessible.spec.ts --headed
+```
+
+### Run just one specific test with exact match
+
+```bash
+pnpm exec playwright test PlacesInaccessible.spec.ts -g "should have automatically detectable accessibility issues"
+```
+
 ## Test Structure
 
 ```
