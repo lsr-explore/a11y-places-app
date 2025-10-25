@@ -109,7 +109,6 @@ const Places: React.FC = () => {
           color="primary"
           startIcon={<AddIcon />}
           onClick={() => navigate('/places/add', { state: { returnFocusTo: 'add-button' } })}
-          aria-label="Add new place"
         >
           Add Place
         </Button>

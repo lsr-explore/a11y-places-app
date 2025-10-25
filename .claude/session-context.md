@@ -8,7 +8,7 @@ This document contains context and state information from development sessions t
 
 ## Project Overview
 
-An accessible places management application built with React, focusing on accessibility best practices and native mobile support.
+An accessible places management application built with React, focusing on accessibility best practices and native mobile support. This is a workshop project for teaching accessibility principles.
 
 ## Technical Stack
 
@@ -19,13 +19,8 @@ An accessible places management application built with React, focusing on access
 - **Native Support**: Capacitor v7 (iOS/Android platforms not added yet)
 - **Storage**: @capacitor/preferences for persistent data
 - **Component Development**: Storybook v9.1.13
+- **Testing**: Playwright for component testing
 - **Linting**: Biome
-
-## Working Directory
-
-```
-/Users/laurie/dev/a11y-places-workshop/dev/a11y-places-workshop/a11y-places-app
-```
 
 ## Project Structure
 
@@ -33,12 +28,12 @@ An accessible places management application built with React, focusing on access
 src/
   pages/
     AddPlace.tsx          - Form component for add/edit place (with IconPicker)
-    AddPlace.stories.tsx  - ✅ Working stories
+    AddPlace.stories.tsx  - Working stories with multiple scenarios
     Places.tsx            - List component showing all places
-    Places.stories.tsx    - ⚠️ Mock data not displaying
+    Places.stories.tsx    - Working stories with mock data and Playwright tests
   components/
     IconPicker.tsx           - MUI icon selection dialog
-    IconPicker.stories.tsx   - ✅ Working
+    IconPicker.stories.tsx   - Working stories
     Breadcrumbs.tsx          - Navigation breadcrumbs
     Layout.tsx               - App layout wrapper
   utils/
@@ -48,14 +43,15 @@ src/
 
 .storybook/
   main.ts                 - Config with @storybook/addon-a11y added
+  preview.tsx             - Global decorators, including MSW mock setup
 ```
 
 ## Current State
 
-### Components
-- **IconPicker**: Fully functional with Storybook stories working
-- **AddPlace**: Form component with stories working properly
-- **Places**: List view component exists, but mock data not displaying in stories
+### Components Status
+- **IconPicker**: Fully functional with working Storybook stories
+- **AddPlace**: Form component with comprehensive stories
+- **Places**: List view component with Playwright tests
 - **Breadcrumbs**: Navigation component implemented
 - **Layout**: App wrapper component
 
@@ -69,12 +65,17 @@ interface Place {
 }
 ```
 
-### Known Issues
-- Places.stories.tsx: Mock data not displaying correctly in Storybook
+### Mocking Strategy
+- MSW (Mock Service Worker) is set up in Storybook for API mocking
+- Storage module is mocked for Storybook: `../utils/storage.ts` -> `./storage.mock.ts`
+- React Router is mocked for Storybook using `reactRouterParameters`
+
+### Known Issues & Recent Work
+- Recently added intentionally inaccessible examples for workshop demonstrations
+- Introduced a color contrast issue (commit: db5f4b7) for teaching purposes
+- Playwright component tests integrated with Storybook
 
 ## Development Commands
-
-(Add your common commands here as you use them)
 
 ```bash
 # Install dependencies
@@ -91,20 +92,33 @@ pnpm run build
 
 # Run linter
 pnpm run lint
+
+# Run Playwright tests
+npx playwright test
 ```
+
+## Workshop Focus
+
+This application intentionally includes accessibility issues for teaching purposes. The main goals are:
+- Demonstrate WCAG compliance best practices
+- Show common accessibility pitfalls and how to fix them
+- Provide hands-on examples with real components
+- Use Storybook's a11y addon for testing and learning
 
 ## Next Steps
 
-- Fix Places.stories.tsx mock data display issue
+- Add more accessibility examples (both good and bad) for workshop
 - Add iOS/Android platforms to Capacitor
-- Continue accessibility improvements
-- Add more Storybook stories as components are built
+- Continue accessibility improvements and demonstrations
+- Expand Playwright test coverage
+- Add more workshop scenarios
 
 ---
 
-## Notes for Future Sessions
+## Development Notes
 
 - The app uses Capacitor Preferences API for storage (via utils/storage.ts)
 - All components should follow MUI v7 patterns
 - Storybook is configured with a11y addon for accessibility testing
 - Focus on WCAG compliance throughout development
+- Some accessibility issues are intentional for workshop teaching purposes
