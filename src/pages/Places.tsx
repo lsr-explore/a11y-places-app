@@ -20,7 +20,6 @@ import { createRef, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
 import type { Place } from '../types/Place';
-import { deletePlace, getPlaces } from '../utils/storage';
 import { useStorage } from '../utils/storageApi';
 
 const Places: React.FC = () => {

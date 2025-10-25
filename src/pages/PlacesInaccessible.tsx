@@ -1,3 +1,9 @@
+/* eslint-disable jsx-a11y/interactive-supports-focus */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/** biome-ignore-all lint/a11y/useFocusableInteractive: workshop demo */
+/** biome-ignore-all lint/a11y/useSemanticElements: workshop demo */
+/** biome-ignore-all lint/a11y/useKeyWithClickEvents: workshop demo */
+
 import * as MuiIcons from '@mui/icons-material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -17,7 +23,6 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
 import type { Place } from '../types/Place';
-import { deletePlace, getPlaces } from '../utils/storage';
 import { useStorage } from '../utils/storageApi';
 
 const PlacesInaccessible: React.FC = () => {
@@ -89,7 +94,6 @@ const PlacesInaccessible: React.FC = () => {
                   />
                   {/* Issue #3: Delete button is a div with click handler - not keyboard accessible */}
                   {/* Adding role="button" makes it detectable by axe-core but still inaccessible */}
-                  {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
                   <div
                     role="button"
                     onClick={() => handleDelete(place.id)}
@@ -111,6 +115,7 @@ const PlacesInaccessible: React.FC = () => {
           {/* Issue #5: Edit buttons rendered after list but positioned with CSS to appear inline
               This creates awkward keyboard navigation - user tabs through all items first,
               then tabs back to edit buttons at the end */}
+          {/* Issue #6: Edit button color fails WCAG color contrast requirements */}
           {places.map((place, index) => (
             <Button
               key={place.id}
@@ -120,6 +125,11 @@ const PlacesInaccessible: React.FC = () => {
                 position: 'absolute',
                 top: `${index * 73 + 16}px`, // Approximate positioning to align with list items
                 right: '56px',
+                backgroundColor: '#9AA88F',
+                color: '#ffffff',
+                '&:hover': {
+                  backgroundColor: '#8a9880',
+                },
               }}
             >
               Edit
