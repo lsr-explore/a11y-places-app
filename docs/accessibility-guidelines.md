@@ -17,11 +17,13 @@ Keyboard only navigation
 
 See the W3 site for videos for perspectives on Web Accessibility and how people with disabilities use the web - <https://www.w3.org/WAI/people/>
 
-Accessibility = Usability + Assistive Technology Compatibility + WCAG/Aria Compliance
+Accessibility = Usability + Assistive Technology Compatibility + WCAG/ARIA Compliance
 
-When delivering accessible experiences, just being compliant with the  
+When delivering accessible experiences, compliance with WCAG and ARIA standards is just the baseline. True accessibility also requires good usability and thoughtful consideration of user needs.
 
-Example 1: image
+## Examples
+
+### Example 1: Image Alt Text
 Creating the alt tag for the image, keep in mind what is important to keep the user’s goal in mind
 
 Src: Pexels - Photographer: Stephen Noulton - A red kite flying in the sky with its wings spread
@@ -32,43 +34,48 @@ Usability + Assistive Technology Compatible: <img src=”...” alt=”Close-up 
 Pexels Site - Free and Stock Photo provide additional context
 <img src=”...” alt=”Free Close-up of a red kite soaring gracefully with wings spread wide against a clear background. Stock Photo” />
 
-Example 2: Address table
-While it is semantically correct to only display the Edit button, it is not very usable and violates WCAG guidelines.
+### Example 2: Accessible Button Labels
 
-Name
+While a button with just "Edit" text is semantically correct, it is not very usable and can violate WCAG guidelines when the context is ambiguous.
 
+| Name | Assistive Tech Compatible | Usability + AT + WCAG/ARIA |
+|------|---------------------------|----------------------------|
+| Chiho Murakami | `<Button>Edit</Button>` | `<Button aria-label="Edit Chiho Murakami">Edit</Button>` |
+| John Wagner | `<Button>Edit</Button>` | `<Button aria-label="Edit John Wagner">Edit</Button>` |
 
+---
 
+## WCAG and ARIA Standards
 
-Usability + Assistive Technology Compatibility + WCAG/Aria Compliance
-Chiho Murakami
-Edit
-<Button>Edit</Button>
-<Button aria-label=”Edit Chiho Murakami>
-    Edit
-</Button>
-John Wagner
-Edit
-<Button>Edit</Button>
-<Button aria-label=”Edit John Wagner>
-    Edit
-</Button>
+**Web Content Accessibility Guidelines (WCAG)** are a set of principles and rules published by the W3C and adopted as an ISO standard. It is the primary evaluation criteria for accessible web sites. The current version is **WCAG 2.2**.
 
+### WCAG 2.2 Four Core Principles (POUR)
 
+Reference: [WCAG 2.2 Quick Reference](https://www.w3.org/WAI/WCAG22/quickref/)
 
-WCAG and ARIA
-Web Content Accessibility Guidelines (WCAG)  are a set of principles and rules that is published by the W3C and has been adopted as an ISO standard.  It is the primary evaluation criteria for web sites.  The current version is 2.2
+Each principle is expanded through guidelines categorized into three conformance levels: **A**, **AA**, and **AAA**. Most sites target **Level AA**.
 
-WCAG is based on four core principles:
-https://www.w3.org/WAI/WCAG22/quickref/
+1. **Perceivable**: Content must be presentable to users in ways they can perceive
+   - Examples: Text alternatives for images, captions for videos, sufficient color contrast
 
-Each Principle is expanded through a set of Guidelines which are categorized into three levels of conformance - A, AA, and AAA.  Most sites target AA
-Perceivable: Content must be presentable to users in ways they can perceive (e.g., through text alternatives for images, captions for videos). 
-Operable: User interface components and navigation must be operable (e.g., through keyboard access, sufficient time to complete tasks). 
-Understandable: Information and the operation of the user interface must be understandable (e.g., through clear language, predictable behavior). 
-Robust: Content must be robust enough to be interpreted reliably by a wide variety of user agents, including assistive technologies.
+2. **Operable**: User interface components and navigation must be operable
+   - Examples: Keyboard access, sufficient time to complete tasks, seizure prevention
 
-Accessible Rich Internet Applications (ARIA) are a set of html attributes that can be added to HTML to communicate additional role, states, and properties.  Examples are checked for a checkbox. 
+3. **Understandable**: Information and operation of the user interface must be understandable
+   - Examples: Clear language, predictable behavior, input assistance
+
+4. **Robust**: Content must be interpreted reliably by a wide variety of user agents, including assistive technologies
+   - Examples: Valid HTML, proper ARIA usage, parsing compatibility
+
+### WAI-ARIA 1.2
+
+**Accessible Rich Internet Applications (ARIA)** is a set of HTML attributes that communicate additional roles, states, and properties to assistive technologies.
+
+- **Roles**: Define what an element is (e.g., `role="button"`, `role="alert"`)
+- **States**: Define the current condition (e.g., `aria-checked="true"`, `aria-expanded="false"`)
+- **Properties**: Define additional characteristics (e.g., `aria-label`, `aria-describedby`)
+
+**Important**: Use semantic HTML first. Only add ARIA when semantic HTML alone is insufficient. 
 
 ## 🧩 Accessibility Practice Checklist
 

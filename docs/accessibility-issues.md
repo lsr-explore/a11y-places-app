@@ -2,7 +2,7 @@
 
 This document identifies the accessibility issues present in the inaccessible versions of the Places and AddPlace pages. These issues serve as "before" examples for the accessibility workshop.
 
-The following were used 
+The following standards were used to evaluate and document these issues:
 
 - **W3C WCAG 2.2 Level AA**: https://www.w3.org/TR/WCAG22/
 - **WAI-ARIA 1.2**: https://www.w3.org/TR/wai-aria-1.2/

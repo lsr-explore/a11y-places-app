@@ -98,8 +98,8 @@ Authoritative References
 - Use only W3C publications (Do not rely on non-W3C interpretations or third-party summaries.)
 - WCAG 2.2 Guidelines (12 Dec 2024): <https://www.w3.org/TR/WCAG22/>
 - WCAG 2.2 Quick Reference: <https://www.w3.org/WAI/WCAG22/quickref/>
-_ WAI-ARIA 1.2 (6 Jun 2023): <https://www.w3.org/TR/wai-aria-1.2/>
-_ ARIA Authoring Practices Guide (APG): <https://www.w3.org/WAI/ARIA/apg/>
+- WAI-ARIA 1.2 (6 Jun 2023): <https://www.w3.org/TR/wai-aria-1.2/>
+- ARIA Authoring Practices Guide (APG): <https://www.w3.org/WAI/ARIA/apg/>
 
 Output Format
 Return each finding as a Markdown table with one row per issue using the column headers above.

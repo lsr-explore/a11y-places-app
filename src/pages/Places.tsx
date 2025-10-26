@@ -2,7 +2,6 @@ import * as MuiIcons from '@mui/icons-material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
-  Alert,
   Box,
   Button,
   Container,
@@ -12,12 +11,12 @@ import {
   ListItemIcon,
   ListItemText,
   Paper,
-  Snackbar,
   Typography,
 } from '@mui/material';
 import type React from 'react';
 import { createRef, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import Banner from '../components/Banner';
 import Breadcrumbs from '../components/Breadcrumbs';
 import type { Place } from '../types/Place';
 import { useStorage } from '../utils/storageApi';
@@ -74,10 +73,18 @@ const Places: React.FC = () => {
     }
   }, [location.state, places]);
 
-  const handleSnackbarClose = (_event?: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
+  // Auto-dismiss banner after 6 seconds
+  useEffect(() => {
+    if (snackbarOpen) {
+      const timeoutId = setTimeout(() => {
+        setSnackbarOpen(false);
+      }, 6000);
+
+      return () => clearTimeout(timeoutId);
     }
+  }, [snackbarOpen]);
+
+  const handleBannerClose = () => {
     setSnackbarOpen(false);
   };
 
@@ -100,103 +107,95 @@ const Places: React.FC = () => {
   };
 
   return (
-    <Container maxWidth="md">
-      <Breadcrumbs items={breadcrumbItems} />
-      <Box sx={{ mb: 1 }}>
-        <Typography variant="caption" color="success.main" sx={{ fontWeight: 'bold' }}>
-          ✓ Accessibility Enabled
-        </Typography>
-      </Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Typography variant="h4" component="h1">
-          Places
-        </Typography>
-        <Button
-          ref={addButtonRef}
-          variant="contained"
-          color="primary"
-          startIcon={<AddIcon />}
-          onClick={() => navigate('/places/add', { state: { returnFocusTo: 'add-button' } })}
-        >
-          Add Place
-        </Button>
-      </Box>
-
-      {places.length === 0 ? (
-        <Paper elevation={2} sx={{ p: 4, textAlign: 'center' }}>
-          <Typography variant="body1" color="text.secondary">
-            No places added yet. Click "Add Place" to get started!
-          </Typography>
-        </Paper>
-      ) : (
-        <Paper elevation={2}>
-          <List>
-            {places.map((place, index) => {
-              // Create a ref for each edit button if it doesn't exist
-              if (!editButtonRefs.current[place.id]) {
-                editButtonRefs.current[place.id] = createRef<HTMLButtonElement>();
-              }
-
-              return (
-                <ListItem
-                  key={place.id}
-                  divider={index < places.length - 1}
-                  secondaryAction={
-                    <Box>
-                      <Button
-                        ref={editButtonRefs.current[place.id]}
-                        aria-describedby={`place-name-${place.id}`}
-                        onClick={() =>
-                          navigate(`/places/edit/${place.id}`, {
-                            state: { returnFocusTo: `edit-${place.id}` },
-                          })
-                        }
-                        size="small"
-                      >
-                        Edit
-                      </Button>
-                      <IconButton
-                        edge="end"
-                        aria-label="Delete"
-                        aria-describedby={`place-name-${place.id}`}
-                        onClick={() => handleDelete(place.id)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </Box>
-                  }
-                >
-                  <ListItemIcon aria-hidden="true">{getIconComponent(place.icon)}</ListItemIcon>
-                  <ListItemText
-                    primary={place.name}
-                    secondary={place.places}
-                    primaryTypographyProps={{
-                      id: `place-name-${place.id}`,
-                    }}
-                  />
-                </ListItem>
-              );
-            })}
-          </List>
-        </Paper>
-      )}
-
-      <Snackbar
+    <>
+      <Banner
+        message={snackbarMessage}
+        severity="success"
         open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      >
-        <Alert
-          onClose={handleSnackbarClose}
-          severity="success"
-          variant="filled"
-          sx={{ width: '100%' }}
-        >
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
-    </Container>
+        onClose={handleBannerClose}
+      />
+      <Container maxWidth="md">
+        <Breadcrumbs items={breadcrumbItems} />
+        <Box sx={{ mb: 1 }}>
+          <Typography variant="caption" color="success.main" sx={{ fontWeight: 'bold' }}>
+            ✓ Accessibility Enabled
+          </Typography>
+        </Box>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+          <Typography variant="h4" component="h1">
+            Places
+          </Typography>
+          <Button
+            ref={addButtonRef}
+            variant="contained"
+            color="primary"
+            startIcon={<AddIcon />}
+            onClick={() => navigate('/places/add', { state: { returnFocusTo: 'add-button' } })}
+          >
+            Add Place
+          </Button>
+        </Box>
+
+        {places.length === 0 ? (
+          <Paper elevation={2} sx={{ p: 4, textAlign: 'center' }}>
+            <Typography variant="body1" color="text.secondary">
+              No places added yet. Click "Add Place" to get started!
+            </Typography>
+          </Paper>
+        ) : (
+          <Paper elevation={2}>
+            <List>
+              {places.map((place, index) => {
+                // Create a ref for each edit button if it doesn't exist
+                if (!editButtonRefs.current[place.id]) {
+                  editButtonRefs.current[place.id] = createRef<HTMLButtonElement>();
+                }
+
+                return (
+                  <ListItem
+                    key={place.id}
+                    divider={index < places.length - 1}
+                    secondaryAction={
+                      <Box>
+                        <Button
+                          ref={editButtonRefs.current[place.id]}
+                          aria-describedby={`place-name-${place.id}`}
+                          onClick={() =>
+                            navigate(`/places/edit/${place.id}`, {
+                              state: { returnFocusTo: `edit-${place.id}` },
+                            })
+                          }
+                          size="small"
+                        >
+                          Edit
+                        </Button>
+                        <IconButton
+                          edge="end"
+                          aria-label="Delete"
+                          aria-describedby={`place-name-${place.id}`}
+                          onClick={() => handleDelete(place.id)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </Box>
+                    }
+                  >
+                    <ListItemIcon aria-hidden="true">{getIconComponent(place.icon)}</ListItemIcon>
+                    <ListItemText
+                      primary={place.name}
+                      secondary={place.places}
+                      primaryTypographyProps={{
+                        id: `place-name-${place.id}`,
+                      }}
+                    />
+                  </ListItem>
+                );
+              })}
+            </List>
+          </Paper>
+        )}
+      </Container>
+    </>
   );
 };
 

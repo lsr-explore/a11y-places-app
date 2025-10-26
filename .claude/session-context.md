@@ -128,16 +128,22 @@ This application intentionally includes accessibility issues for teaching purpos
 - Focus on WCAG compliance throughout development
 - Some accessibility issues are intentional for workshop teaching purposes
 
-  ## Accessibility Standards (REQUIRED)
+## Accessibility Standards (REQUIRED)
 
-  All frontend UI code MUST adhere to:
-  - **W3C WCAG 2.2 Level AA**: <https://www.w3.org/TR/WCAG22/>
-  - **WAI-ARIA 1.2**: <https://www.w3.org/TR/wai-aria-1.2/>
+All frontend UI code MUST adhere to:
+- **W3C WCAG 2.2 Level AA**: <https://www.w3.org/TR/WCAG22/>
+- **WAI-ARIA 1.2**: <https://www.w3.org/TR/wai-aria-1.2/>
 
-  When creating or modifying components:
-  - Reference these as source of truth
-    - **W3C WCAG 2.2 Level AA**: <https://www.w3.org/TR/WCAG22/>
-    - **WAI-ARIA 1.2**: <https://www.w3.org/TR/wai-aria-1.2/>
-  - Consider WCAG 2.2 new success criteria (2.4.11, 2.4.12, 2.5.7, 2.5.8, 3.2.6, 3.3.7-9)
-  - Use semantic HTML first, ARIA when necessary
-  - Test with jest-axe and Playwright axe-core
+When creating or modifying components:
+- Reference these standards as source of truth
+- Consider WCAG 2.2 new success criteria:
+  - 2.4.11 Focus Appearance (Enhanced)
+  - 2.4.12 Focus Not Obscured (Minimum)
+  - 2.5.7 Dragging Movements
+  - 2.5.8 Target Size (Minimum)
+  - 3.2.6 Consistent Help
+  - 3.3.7 Redundant Entry
+  - 3.3.8 Accessible Authentication (Minimum)
+  - 3.3.9 Accessible Authentication (Enhanced)
+- Use semantic HTML first, ARIA when necessary
+- Test with jest-axe and Playwright axe-core
