@@ -1,10 +1,16 @@
 import * as MuiIcons from '@mui/icons-material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import {
   Box,
   Button,
   Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   IconButton,
   List,
   ListItem,
@@ -25,6 +31,7 @@ const Places: React.FC = () => {
   const [places, setPlaces] = useState<Place[]>([]);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [clearDialogOpen, setClearDialogOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { getPlaces, deletePlace } = useStorage();
@@ -97,6 +104,26 @@ const Places: React.FC = () => {
     }
   };
 
+  const handleClearDataClick = () => {
+    setClearDialogOpen(true);
+  };
+
+  const handleClearDataConfirm = async () => {
+    // Clear all data from localStorage
+    localStorage.clear();
+    // Reload places (will be empty now)
+    await loadPlaces();
+    // Close dialog
+    setClearDialogOpen(false);
+    // Show success message
+    setSnackbarMessage('All workshop data has been cleared');
+    setSnackbarOpen(true);
+  };
+
+  const handleClearDataCancel = () => {
+    setClearDialogOpen(false);
+  };
+
   const getIconComponent = (iconName: string) => {
     const Icon = (MuiIcons as any)[iconName];
     return Icon ? <Icon /> : <MuiIcons.Place />;
@@ -117,15 +144,25 @@ const Places: React.FC = () => {
           <Typography variant="h4" component="h1" id="main-content">
             Places
           </Typography>
-          <Button
-            ref={addButtonRef}
-            variant="contained"
-            color="primary"
-            startIcon={<AddIcon />}
-            onClick={() => navigate('/places/add', { state: { returnFocusTo: 'add-button' } })}
-          >
-            Add Place
-          </Button>
+          <Box sx={{ display: 'flex', gap: 2 }}>
+            <Button
+              ref={addButtonRef}
+              variant="contained"
+              color="primary"
+              startIcon={<AddIcon />}
+              onClick={() => navigate('/places/add', { state: { returnFocusTo: 'add-button' } })}
+            >
+              Add Place
+            </Button>
+            <Button
+              variant="outlined"
+              color="warning"
+              startIcon={<DeleteSweepIcon />}
+              onClick={handleClearDataClick}
+            >
+              Clear All Data
+            </Button>
+          </Box>
         </Box>
 
         <Banner
@@ -194,6 +231,32 @@ const Places: React.FC = () => {
             </List>
           </Paper>
         )}
+
+        <Dialog
+          open={clearDialogOpen}
+          onClose={handleClearDataCancel}
+          aria-labelledby="clear-data-dialog-title"
+          aria-describedby="clear-data-dialog-description"
+        >
+          <DialogTitle id="clear-data-dialog-title">Clear All Saved Places?</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="clear-data-dialog-description">
+              This will permanently delete all places that you have added. This action cannot be
+              undone.
+              <br />
+              <br />
+              Note: This only clears data stored locally in your browser.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClearDataCancel} variant="outlined">
+              Cancel
+            </Button>
+            <Button onClick={handleClearDataConfirm} variant="contained" color="warning">
+              Clear All Data
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Container>
     </>
   );
