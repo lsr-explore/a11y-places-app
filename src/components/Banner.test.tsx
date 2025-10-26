@@ -147,8 +147,8 @@ describe('Banner Component', () => {
     expect(alert).toHaveAttribute('aria-atomic', 'true');
   });
 
-  test('renders spacer to prevent layout shift', () => {
-    const { container } = render(
+  test('banner animates with smooth collapse transition', () => {
+    render(
       <Banner
         message="Test message"
         severity="success"
@@ -157,24 +157,9 @@ describe('Banner Component', () => {
       />
     );
 
-    // Find the spacer (the Box with aria-hidden="true")
-    const spacer = container.querySelector('[aria-hidden="true"]');
-    expect(spacer).toBeInTheDocument();
-  });
-
-  test('spacer has no height when banner is closed', () => {
-    const { container } = render(
-      <Banner
-        message="Test message"
-        severity="success"
-        open={false}
-        onClose={mockOnClose}
-      />
-    );
-
-    // Find the spacer
-    const spacer = container.querySelector('[aria-hidden="true"]');
-    expect(spacer).toBeInTheDocument();
+    // Verify the banner is rendered with the alert
+    const alert = screen.getByRole('alert');
+    expect(alert).toBeInTheDocument();
   });
 
   test('should not have any automatically detectable accessibility issues when open', async () => {

@@ -54,18 +54,21 @@ const PlacesInaccessible: React.FC = () => {
   };
 
   return (
-    <Container maxWidth="md">
-      <Breadcrumbs items={breadcrumbItems} />
-      <Box sx={{ mb: 1 }}>
-        <Typography variant="caption" color="error.main" sx={{ fontWeight: 'bold' }}>
+    <>
+      <Box sx={{ textAlign: 'center', mb: 2 }}>
+        <Typography variant="body1" color="error.main" sx={{ fontWeight: 'bold' }}>
           ⚠ Accessibility Issues Present (For Workshop Demo)
         </Typography>
       </Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Typography variant="h4" component="h1">
-          Places
-        </Typography>
-      </Box>
+      <Container maxWidth="md">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
+      <Container maxWidth="md">
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+          <Typography variant="h4" component="h1" id="main-content">
+            Places
+          </Typography>
+        </Box>
 
       {places.length === 0 ? (
         <Paper elevation={2} sx={{ p: 4, textAlign: 'center' }}>
@@ -138,18 +141,19 @@ const PlacesInaccessible: React.FC = () => {
         </Paper>
       )}
 
-      {/* Issue #4: Add place button moved below the list */}
-      <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center' }}>
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<AddIcon />}
-          onClick={() => navigate('/places-inaccessible/add')}
-        >
-          Add Place
-        </Button>
-      </Box>
-    </Container>
+        {/* Issue #4: Add place button moved below the list */}
+        <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center' }}>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<AddIcon />}
+            onClick={() => navigate('/places-inaccessible/add')}
+          >
+            Add Place
+          </Button>
+        </Box>
+      </Container>
+    </>
   );
 };
 

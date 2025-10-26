@@ -96,17 +96,20 @@ const AddPlaceInaccessible: React.FC = () => {
   };
 
   return (
-    <Container maxWidth="sm">
-      <Breadcrumbs items={breadcrumbItems} />
-      <Box sx={{ mb: 1, mt: 2 }}>
-        <Typography variant="caption" color="error.main" sx={{ fontWeight: 'bold' }}>
+    <>
+      <Box sx={{ textAlign: 'center', mb: 2 }}>
+        <Typography variant="body1" color="error.main" sx={{ fontWeight: 'bold' }}>
           ⚠ Accessibility Issues Present (For Workshop Demo)
         </Typography>
       </Box>
-      <Paper elevation={3} sx={{ p: 4, mt: 2 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          {isEditMode ? 'Edit Place' : 'Add New Place'}
-        </Typography>
+      <Container maxWidth="sm">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
+      <Container maxWidth="sm">
+        <Paper elevation={3} sx={{ p: 4, mt: 2 }}>
+          <Typography variant="h4" component="h1" gutterBottom id="main-content">
+            {isEditMode ? 'Edit Place' : 'Add New Place'}
+          </Typography>
 
         {/* Issue #1: Description of required asterisk removed */}
 
@@ -183,15 +186,16 @@ const AddPlaceInaccessible: React.FC = () => {
             </Button>
           </Box>
         </Box>
-      </Paper>
+        </Paper>
 
-      <IconPicker
-        open={iconPickerOpen}
-        onClose={() => setIconPickerOpen(false)}
-        onSelect={setIcon}
-        selectedIcon={icon}
-      />
-    </Container>
+        <IconPicker
+          open={iconPickerOpen}
+          onClose={() => setIconPickerOpen(false)}
+          onSelect={setIcon}
+          selectedIcon={icon}
+        />
+      </Container>
+    </>
   );
 };
 

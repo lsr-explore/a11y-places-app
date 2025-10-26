@@ -16,7 +16,7 @@ import {
 import type React from 'react';
 import { createRef, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Banner from '../components/Banner';
+import Banner, { type BannerRef } from '../components/Banner';
 import Breadcrumbs from '../components/Breadcrumbs';
 import type { Place } from '../types/Place';
 import { useStorage } from '../utils/storageApi';
@@ -31,6 +31,7 @@ const Places: React.FC = () => {
 
   const editButtonRefs = useRef<{ [key: string]: React.RefObject<HTMLButtonElement | null> }>({});
   const addButtonRef = useRef<HTMLButtonElement>(null);
+  const bannerRef = useRef<BannerRef>(null);
 
   const breadcrumbItems = [{ label: 'Home', path: '/' }, { label: 'Places (Accessible)' }];
 
@@ -59,11 +60,17 @@ const Places: React.FC = () => {
     if (restoreFocusTo) {
       // Use setTimeout to ensure focus happens after render is complete
       const timeoutId = setTimeout(() => {
-        if (restoreFocusTo === 'add-button') {
-          addButtonRef.current?.focus();
-        } else if (restoreFocusTo.startsWith('edit-')) {
-          const placeId = restoreFocusTo.replace('edit-', '');
-          editButtonRefs.current[placeId]?.current?.focus();
+        // If there's a success message, focus on the banner's close button
+        // Otherwise (cancel operation), restore focus to the previous element
+        if (successMessage) {
+          bannerRef.current?.focusCloseButton();
+        } else {
+          if (restoreFocusTo === 'add-button') {
+            addButtonRef.current?.focus();
+          } else if (restoreFocusTo.startsWith('edit-')) {
+            const placeId = restoreFocusTo.replace('edit-', '');
+            editButtonRefs.current[placeId]?.current?.focus();
+          }
         }
         // Clear the state after focusing
         window.history.replaceState({}, document.title);
@@ -72,17 +79,6 @@ const Places: React.FC = () => {
       return () => clearTimeout(timeoutId);
     }
   }, [location.state, places]);
-
-  // Auto-dismiss banner after 6 seconds
-  useEffect(() => {
-    if (snackbarOpen) {
-      const timeoutId = setTimeout(() => {
-        setSnackbarOpen(false);
-      }, 6000);
-
-      return () => clearTimeout(timeoutId);
-    }
-  }, [snackbarOpen]);
 
   const handleBannerClose = () => {
     setSnackbarOpen(false);
@@ -108,21 +104,17 @@ const Places: React.FC = () => {
 
   return (
     <>
-      <Banner
-        message={snackbarMessage}
-        severity="success"
-        open={snackbarOpen}
-        onClose={handleBannerClose}
-      />
+      <Box sx={{ textAlign: 'center', mb: 2 }}>
+        <Typography variant="body1" color="success.main" sx={{ fontWeight: 'bold' }}>
+          ✓ Accessibility Enabled
+        </Typography>
+      </Box>
       <Container maxWidth="md">
         <Breadcrumbs items={breadcrumbItems} />
-        <Box sx={{ mb: 1 }}>
-          <Typography variant="caption" color="success.main" sx={{ fontWeight: 'bold' }}>
-            ✓ Accessibility Enabled
-          </Typography>
-        </Box>
+      </Container>
+      <Container maxWidth="md">
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-          <Typography variant="h4" component="h1">
+          <Typography variant="h4" component="h1" id="main-content">
             Places
           </Typography>
           <Button
@@ -135,6 +127,14 @@ const Places: React.FC = () => {
             Add Place
           </Button>
         </Box>
+
+        <Banner
+          ref={bannerRef}
+          message={snackbarMessage}
+          severity="success"
+          open={snackbarOpen}
+          onClose={handleBannerClose}
+        />
 
         {places.length === 0 ? (
           <Paper elevation={2} sx={{ p: 4, textAlign: 'center' }}>

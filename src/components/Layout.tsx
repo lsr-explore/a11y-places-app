@@ -19,6 +19,7 @@ import {
 import type React from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import SkipLink from './SkipLink';
 
 const drawerWidth = 240;
 
@@ -106,6 +107,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <Box sx={{ display: 'flex' }}>
+      <SkipLink href="#main-content">Skip to main content</SkipLink>
       <AppBar position="fixed">
         <Toolbar>
           <IconButton

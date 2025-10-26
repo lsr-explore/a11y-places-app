@@ -146,7 +146,7 @@ describe('Places Component', () => {
     expect(screen.getByText('"Coffee Shop" updated successfully')).toBeInTheDocument();
   });
 
-  test('focuses Edit button for newly added place', async () => {
+  test('focuses banner Close button for newly added place', async () => {
     (storage.getPlaces as jest.Mock).mockResolvedValue(mockPlaces);
     mockLocationState = {
       successMessage: 'Place added successfully',
@@ -159,15 +159,14 @@ describe('Places Component', () => {
       expect(screen.getByText('Central Park')).toBeInTheDocument();
     });
 
-    // Wait for focus to be set
+    // Wait for focus to be set on the banner's Close button
     await waitFor(() => {
-      const editButtons = screen.getAllByRole('button', { name: 'Edit' });
-      // The first edit button (for Central Park with id '1') should have focus
-      expect(editButtons[0]).toHaveFocus();
+      const closeButton = screen.getByLabelText('Close');
+      expect(closeButton).toHaveFocus();
     });
   });
 
-  test('focuses Edit button for updated place', async () => {
+  test('focuses banner Close button for updated place', async () => {
     (storage.getPlaces as jest.Mock).mockResolvedValue(mockPlaces);
     mockLocationState = {
       successMessage: 'Place updated successfully',
@@ -180,11 +179,10 @@ describe('Places Component', () => {
       expect(screen.getByText('Coffee Shop')).toBeInTheDocument();
     });
 
-    // Wait for focus to be set
+    // Wait for focus to be set on the banner's Close button
     await waitFor(() => {
-      const editButtons = screen.getAllByRole('button', { name: 'Edit' });
-      // The second edit button (for Coffee Shop with id '2') should have focus
-      expect(editButtons[1]).toHaveFocus();
+      const closeButton = screen.getByLabelText('Close');
+      expect(closeButton).toHaveFocus();
     });
   });
 

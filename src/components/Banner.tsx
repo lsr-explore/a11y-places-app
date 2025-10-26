@@ -1,6 +1,6 @@
 import CloseIcon from '@mui/icons-material/Close';
-import { Alert, Box, IconButton, Slide } from '@mui/material';
-import type React from 'react';
+import { Alert, Box, Collapse, IconButton } from '@mui/material';
+import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 
 export interface BannerProps {
   message: string;
@@ -9,27 +9,29 @@ export interface BannerProps {
   onClose: () => void;
 }
 
-const BANNER_HEIGHT = 56;
+export interface BannerRef {
+  focusCloseButton: () => void;
+}
 
-const Banner: React.FC<BannerProps> = ({ message, severity = 'success', open, onClose }) => {
-  return (
-    <>
-      {/* Fixed banner at the top */}
-      <Box
-        sx={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 1400,
-        }}
-      >
-        <Slide direction="down" in={open} mountOnEnter unmountOnExit>
+const Banner = forwardRef<BannerRef, BannerProps>(
+  ({ message, severity = 'success', open, onClose }, ref) => {
+    const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+    useImperativeHandle(ref, () => ({
+      focusCloseButton: () => {
+        closeButtonRef.current?.focus();
+      },
+    }));
+
+    return (
+      <Collapse in={open} unmountOnExit>
+        <Box sx={{ mb: 2 }}>
           <Alert
             severity={severity}
             variant="filled"
             action={
               <IconButton
+                ref={closeButtonRef}
                 aria-label="Close"
                 color="inherit"
                 size="small"
@@ -40,9 +42,6 @@ const Banner: React.FC<BannerProps> = ({ message, severity = 'success', open, on
             }
             sx={{
               width: '100%',
-              borderRadius: 0,
-              boxShadow: 2,
-              minHeight: `${BANNER_HEIGHT}px`,
               alignItems: 'center',
             }}
             role="alert"
@@ -51,19 +50,12 @@ const Banner: React.FC<BannerProps> = ({ message, severity = 'success', open, on
           >
             {message}
           </Alert>
-        </Slide>
-      </Box>
+        </Box>
+      </Collapse>
+    );
+  }
+);
 
-      {/* Spacer to prevent layout shift */}
-      <Box
-        sx={{
-          height: open ? `${BANNER_HEIGHT}px` : 0,
-          transition: 'height 0.3s ease-in-out',
-        }}
-        aria-hidden="true"
-      />
-    </>
-  );
-};
+Banner.displayName = 'Banner';
 
 export default Banner;

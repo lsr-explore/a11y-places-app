@@ -6,13 +6,16 @@ const Home: React.FC = () => {
   const breadcrumbItems = [{ label: 'Home' }];
 
   return (
-    <Container maxWidth="md">
-      <Breadcrumbs items={breadcrumbItems} />
-      <Paper elevation={3} sx={{ p: 4, mt: 4 }}>
-        <Box>
-          <Typography variant="h3" component="h1" gutterBottom>
-            Welcome to A11y Places
-          </Typography>
+    <>
+      <Container maxWidth="md">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
+      <Container maxWidth="md">
+        <Paper elevation={3} sx={{ p: 4, mt: 4 }}>
+          <Box>
+            <Typography variant="h3" component="h1" gutterBottom id="main-content">
+              Welcome to A11y Places
+            </Typography>
           <Typography variant="body1" paragraph>
             This is an accessible places management application built with React, Material-UI, and
             Capacitor.
@@ -38,9 +41,10 @@ const Home: React.FC = () => {
               Responsive design with Material-UI
             </Typography>
           </Box>
-        </Box>
-      </Paper>
-    </Container>
+          </Box>
+        </Paper>
+      </Container>
+    </>
   );
 };
 
