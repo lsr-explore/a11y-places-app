@@ -79,7 +79,7 @@ const AddPlace: React.FC = () => {
       };
       await updatePlace(updatedPlace);
       navigate('/places', {
-        state: { successMessage: 'Place updated successfully', restoreFocusTo: `edit-${id}` },
+        state: { successMessage: `"${name.trim()}" updated successfully`, restoreFocusTo: `edit-${id}` },
       });
     } else {
       const newPlaceId = Date.now().toString();
@@ -91,7 +91,7 @@ const AddPlace: React.FC = () => {
       };
       await addPlace(newPlace);
       navigate('/places', {
-        state: { successMessage: 'Place added successfully', restoreFocusTo: `edit-${newPlaceId}` },
+        state: { successMessage: `"${name.trim()}" added successfully`, restoreFocusTo: `edit-${newPlaceId}` },
       });
     }
   };

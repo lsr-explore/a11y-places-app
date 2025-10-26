@@ -82,8 +82,16 @@ const Places: React.FC = () => {
   };
 
   const handleDelete = async (id: string) => {
+    // Find the place name before deleting
+    const placeToDelete = places.find((place) => place.id === id);
     await deletePlace(id);
     await loadPlaces();
+
+    // Show success message with place name
+    if (placeToDelete) {
+      setSnackbarMessage(`"${placeToDelete.name}" deleted successfully`);
+      setSnackbarOpen(true);
+    }
   };
 
   const getIconComponent = (iconName: string) => {

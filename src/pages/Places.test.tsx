@@ -1,6 +1,11 @@
 import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { axe, toHaveNoViolations } from 'jest-axe';
 import * as storage from '../utils/storage';
 import Places from './Places';
+
+// Extend Jest matchers
+expect.extend(toHaveNoViolations);
 
 // Mock the storage module
 jest.mock('../utils/storage');
@@ -106,7 +111,7 @@ describe('Places Component', () => {
   test('displays success banner when place is added', async () => {
     (storage.getPlaces as jest.Mock).mockResolvedValue(mockPlaces);
     mockLocationState = {
-      successMessage: 'Place added successfully',
+      successMessage: '"Central Park" added successfully',
       restoreFocusTo: 'edit-1',
     };
 
@@ -116,18 +121,18 @@ describe('Places Component', () => {
       expect(screen.getByText('Central Park')).toBeInTheDocument();
     });
 
-    // Check that success message is displayed
-    expect(screen.getByText('Place added successfully')).toBeInTheDocument();
+    // Check that success message is displayed with place name
+    expect(screen.getByText('"Central Park" added successfully')).toBeInTheDocument();
 
     // Check that the alert has the success role for screen readers
     const alert = screen.getByRole('alert');
-    expect(alert).toHaveTextContent('Place added successfully');
+    expect(alert).toHaveTextContent('"Central Park" added successfully');
   });
 
   test('displays success banner when place is updated', async () => {
     (storage.getPlaces as jest.Mock).mockResolvedValue(mockPlaces);
     mockLocationState = {
-      successMessage: 'Place updated successfully',
+      successMessage: '"Coffee Shop" updated successfully',
       restoreFocusTo: 'edit-2',
     };
 
@@ -137,8 +142,8 @@ describe('Places Component', () => {
       expect(screen.getByText('Coffee Shop')).toBeInTheDocument();
     });
 
-    // Check that success message is displayed
-    expect(screen.getByText('Place updated successfully')).toBeInTheDocument();
+    // Check that success message is displayed with place name
+    expect(screen.getByText('"Coffee Shop" updated successfully')).toBeInTheDocument();
   });
 
   test('focuses Edit button for newly added place', async () => {
@@ -197,7 +202,7 @@ describe('Places Component', () => {
 
     // Wait for focus to be set
     await waitFor(() => {
-      const addButton = screen.getByRole('button', { name: 'Add new place' });
+      const addButton = screen.getByRole('button', { name: /add place/i });
       expect(addButton).toHaveFocus();
     });
   });
@@ -234,5 +239,147 @@ describe('Places Component', () => {
 
     // Check that no alert is displayed
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+  });
+
+  test('can close success banner', async () => {
+    const user = userEvent.setup();
+    (storage.getPlaces as jest.Mock).mockResolvedValue(mockPlaces);
+    mockLocationState = {
+      successMessage: '"Central Park" added successfully',
+    };
+
+    render(<Places />);
+
+    await waitFor(() => {
+      expect(screen.getByText('"Central Park" added successfully')).toBeInTheDocument();
+    });
+
+    // Find and click the close button
+    const closeButton = screen.getByLabelText('Close');
+    expect(closeButton).toBeInTheDocument();
+
+    await user.click(closeButton);
+
+    // Wait for snackbar to close
+    await waitFor(() => {
+      expect(screen.queryByText('"Central Park" added successfully')).not.toBeInTheDocument();
+    });
+  });
+
+  test('deletes a place when delete button is clicked', async () => {
+    const user = userEvent.setup();
+    const mockDeletePlace = jest.fn().mockResolvedValue(undefined);
+    (storage.getPlaces as jest.Mock)
+      .mockResolvedValueOnce(mockPlaces)
+      .mockResolvedValueOnce(mockPlaces.slice(1)); // Return list without first item after delete
+    (storage.deletePlace as jest.Mock).mockImplementation(mockDeletePlace);
+
+    render(<Places />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Central Park')).toBeInTheDocument();
+    });
+
+    // Find and click the first delete button
+    const deleteButtons = screen.getAllByRole('button', { name: 'Delete' });
+    await user.click(deleteButtons[0]);
+
+    await waitFor(() => {
+      expect(mockDeletePlace).toHaveBeenCalledWith('1');
+    });
+
+    // Check that success message is displayed with deleted place name
+    await waitFor(() => {
+      expect(screen.getByText('"Central Park" deleted successfully')).toBeInTheDocument();
+    });
+
+    // Check that the alert has the success role for screen readers
+    const alert = screen.getByRole('alert');
+    expect(alert).toHaveTextContent('"Central Park" deleted successfully');
+  });
+
+  describe('Accessibility', () => {
+    test('should not have any automatically detectable accessibility issues', async () => {
+      (storage.getPlaces as jest.Mock).mockResolvedValue(mockPlaces);
+
+      const { container } = render(<Places />);
+
+      await waitFor(() => {
+        expect(screen.getByText('Central Park')).toBeInTheDocument();
+      });
+
+      const results = await axe(container);
+      expect(results).toHaveNoViolations();
+    });
+
+    test('should have proper heading structure', async () => {
+      (storage.getPlaces as jest.Mock).mockResolvedValue(mockPlaces);
+
+      render(<Places />);
+
+      await waitFor(() => {
+        expect(screen.getByText('Central Park')).toBeInTheDocument();
+      });
+
+      const heading = screen.getByRole('heading', { name: 'Places', level: 1 });
+      expect(heading).toBeInTheDocument();
+    });
+
+    test('should have accessible breadcrumb navigation', async () => {
+      (storage.getPlaces as jest.Mock).mockResolvedValue(mockPlaces);
+
+      render(<Places />);
+
+      await waitFor(() => {
+        expect(screen.getByText('Central Park')).toBeInTheDocument();
+      });
+
+      const breadcrumb = screen.getByRole('navigation', { name: /breadcrumb/i });
+      expect(breadcrumb).toBeInTheDocument();
+
+      const homeLink = screen.getByRole('link', { name: /home/i });
+      expect(homeLink).toBeInTheDocument();
+    });
+
+    test('should have accessible Add Place button', async () => {
+      (storage.getPlaces as jest.Mock).mockResolvedValue(mockPlaces);
+
+      render(<Places />);
+
+      await waitFor(() => {
+        expect(screen.getByText('Central Park')).toBeInTheDocument();
+      });
+
+      const addButton = screen.getByRole('button', { name: /add place/i });
+      expect(addButton).toBeInTheDocument();
+      expect(addButton).toHaveAccessibleName('Add Place');
+    });
+
+    test('should have proper ARIA attributes on icons', async () => {
+      (storage.getPlaces as jest.Mock).mockResolvedValue(mockPlaces);
+
+      const { container } = render(<Places />);
+
+      await waitFor(() => {
+        expect(screen.getByText('Central Park')).toBeInTheDocument();
+      });
+
+      // Icons should be hidden from screen readers
+      const hiddenIcons = container.querySelectorAll('[aria-hidden="true"]');
+      expect(hiddenIcons.length).toBeGreaterThan(0);
+    });
+
+    test('should not have accessibility violations in empty state', async () => {
+      (storage.getPlaces as jest.Mock).mockResolvedValue([]);
+
+      const { container } = render(<Places />);
+
+      await waitFor(() => {
+        expect(screen.getByText(/no places added yet/i)).toBeInTheDocument();
+      });
+
+      const results = await axe(container);
+      expect(results).toHaveNoViolations();
+    });
   });
 });
