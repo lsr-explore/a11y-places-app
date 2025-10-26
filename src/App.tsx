@@ -35,7 +35,7 @@ function App() {
     <StorageContext.Provider value={storageAPI}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Router>
+        <Router basename={process.env.PUBLIC_URL}>
           <Layout>
             <Routes>
               <Route path="/" element={<Home />} />
