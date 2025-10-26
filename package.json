@@ -50,7 +50,7 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "predeploy": "pnpm run build",
-    "deploy": "gh-pages -d build"
+    "gh-deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
