@@ -49,6 +49,7 @@ src/
 ## Current State
 
 ### Components Status
+
 - **IconPicker**: Fully functional with working Storybook stories
 - **AddPlace**: Form component with comprehensive stories
 - **Places**: List view component with Playwright tests
@@ -56,6 +57,7 @@ src/
 - **Layout**: App wrapper component
 
 ### Data Model
+
 ```typescript
 interface Place {
   id: string;
@@ -66,11 +68,13 @@ interface Place {
 ```
 
 ### Mocking Strategy
+
 - MSW (Mock Service Worker) is set up in Storybook for API mocking
 - Storage module is mocked for Storybook: `../utils/storage.ts` -> `./storage.mock.ts`
 - React Router is mocked for Storybook using `reactRouterParameters`
 
 ### Known Issues & Recent Work
+
 - Recently added intentionally inaccessible examples for workshop demonstrations
 - Introduced a color contrast issue (commit: db5f4b7) for teaching purposes
 - Playwright component tests integrated with Storybook
@@ -100,6 +104,7 @@ npx playwright test
 ## Workshop Focus
 
 This application intentionally includes accessibility issues for teaching purposes. The main goals are:
+
 - Demonstrate WCAG compliance best practices
 - Show common accessibility pitfalls and how to fix them
 - Provide hands-on examples with real components
@@ -122,3 +127,17 @@ This application intentionally includes accessibility issues for teaching purpos
 - Storybook is configured with a11y addon for accessibility testing
 - Focus on WCAG compliance throughout development
 - Some accessibility issues are intentional for workshop teaching purposes
+
+  ## Accessibility Standards (REQUIRED)
+
+  All frontend UI code MUST adhere to:
+  - **W3C WCAG 2.2 Level AA**: <https://www.w3.org/TR/WCAG22/>
+  - **WAI-ARIA 1.2**: <https://www.w3.org/TR/wai-aria-1.2/>
+
+  When creating or modifying components:
+  - Reference these as source of truth
+    - **W3C WCAG 2.2 Level AA**: <https://www.w3.org/TR/WCAG22/>
+    - **WAI-ARIA 1.2**: <https://www.w3.org/TR/wai-aria-1.2/>
+  - Consider WCAG 2.2 new success criteria (2.4.11, 2.4.12, 2.5.7, 2.5.8, 3.2.6, 3.3.7-9)
+  - Use semantic HTML first, ARIA when necessary
+  - Test with jest-axe and Playwright axe-core

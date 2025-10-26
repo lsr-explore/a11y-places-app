@@ -24,11 +24,13 @@ A11y Places Workshop
 ### Routes
 
 **Accessible Versions:**
+
 - `/places` - Places list page (accessible)
 - `/places/add` - Add new place form (accessible)
 - `/places/edit/:id` - Edit place form (accessible)
 
 **Inaccessible Versions:**
+
 - `/places-inaccessible` - Places list page (inaccessible demo)
 - `/places-inaccessible/add` - Add new place form (inaccessible demo)
 - `/places-inaccessible/edit/:id` - Edit place form (inaccessible demo)
@@ -38,10 +40,12 @@ A11y Places Workshop
 All pages now display a clear status indicator at the top:
 
 **Accessible Pages:**
+
 - Display: `✓ Accessibility Enabled` (green text)
 - Shows participants what good accessibility looks like
 
 **Inaccessible Pages:**
+
 - Display: `⚠ Accessibility Issues Present (For Workshop Demo)` (red text)
 - Warns users that this version contains intentional accessibility issues
 
@@ -53,7 +57,7 @@ All pages now display a clear status indicator at the top:
 
 ## Using in Workshops
 
-### Recommended Flow:
+### Recommended Flow
 
 1. **Start with Inaccessible Version**
    - Navigate to "Places (Inaccessible)" from the menu
@@ -75,18 +79,21 @@ All pages now display a clear status indicator at the top:
 ### Testing Instructions:
 
 #### Keyboard Testing:
+
 - Use Tab/Shift+Tab to navigate
 - Verify all interactive elements are reachable
 - Check tab order matches visual order
 - Test Enter/Space on buttons
 
 #### Screen Reader Testing:
+
 - NVDA (Windows) / VoiceOver (Mac) / JAWS (Windows)
 - Listen for proper announcements
 - Check ARIA labels and descriptions
 - Verify success messages are announced
 
 #### Automated Testing:
+
 - Use browser DevTools accessibility audit
 - Run axe or Lighthouse
 - Check Storybook accessibility addon results
@@ -94,6 +101,7 @@ All pages now display a clear status indicator at the top:
 ## Implementation Notes
 
 ### Files Modified:
+
 - `src/components/Layout.tsx` - Updated menu with accessible/inaccessible sections
 - `src/App.tsx` - Added routes for inaccessible versions
 - `src/pages/Places.tsx` - Added accessibility status indicator
@@ -102,6 +110,7 @@ All pages now display a clear status indicator at the top:
 - `src/pages/AddPlaceInaccessible.tsx` - Added status indicator and updated navigation
 
 ### Files Created:
+
 - `src/pages/PlacesInaccessible.tsx` - Demo page with accessibility issues
 - `src/pages/AddPlaceInaccessible.tsx` - Demo form with accessibility issues
 - `docs/accessibility-issues.md` - Complete documentation of all issues
