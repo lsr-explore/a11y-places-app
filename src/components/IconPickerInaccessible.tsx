@@ -1,8 +1,17 @@
+/* eslint-disable jsx-a11y/interactive-supports-focus */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-autofocus */
+/** biome-ignore-all lint/a11y/useFocusableInteractive: workshop demo */
+/** biome-ignore-all lint/a11y/useSemanticElements: workshop demo */
+/** biome-ignore-all lint/a11y/useKeyWithClickEvents: workshop demo */
+
 import * as MuiIcons from '@mui/icons-material';
 import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,
+  Button,
   Dialog,
+  DialogActions,
   DialogContent,
   DialogTitle,
   IconButton,
@@ -12,23 +21,30 @@ import {
 import type React from 'react';
 import { useEffect, useId, useState } from 'react';
 
-interface IconPickerProps {
+interface IconPickerInaccessibleProps {
   open: boolean;
   onClose: () => void;
   onSelect: (iconName: string) => void;
   selectedIcon?: string;
 }
 
-const IconPicker: React.FC<IconPickerProps> = ({ open, onClose, onSelect, selectedIcon }) => {
+const IconPickerInaccessible: React.FC<IconPickerInaccessibleProps> = ({
+  open,
+  onClose,
+  onSelect,
+  selectedIcon,
+}) => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [tempSelectedIcon, setTempSelectedIcon] = useState(selectedIcon || 'Place');
   const dialogTitleId = useId();
 
-  // Reset search when dialog opens
+  // Update temp selection when dialog opens with new selectedIcon
   useEffect(() => {
     if (open) {
+      setTempSelectedIcon(selectedIcon || 'Place');
       setSearchTerm('');
     }
-  }, [open]);
+  }, [open, selectedIcon]);
 
   const commonIcons = [
     'Place',
@@ -65,8 +81,16 @@ const IconPicker: React.FC<IconPickerProps> = ({ open, onClose, onSelect, select
     iconName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleSelect = (iconName: string) => {
-    onSelect(iconName);
+  const handleIconClick = (iconName: string) => {
+    setTempSelectedIcon(iconName);
+  };
+
+  const handleApply = () => {
+    onSelect(tempSelectedIcon);
+    onClose();
+  };
+
+  const handleCancel = () => {
     onClose();
   };
 
@@ -76,27 +100,26 @@ const IconPicker: React.FC<IconPickerProps> = ({ open, onClose, onSelect, select
   };
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth aria-labelledby={dialogTitleId}>
-      <Box sx={{ position: 'relative' }}>
-        <DialogTitle id={dialogTitleId}>
-          <Typography variant="h4" component="h1" gutterBottom>
-            Select an Icon
-          </Typography>
-          <IconButton
-            aria-label="Close dialog"
-            onClick={onClose}
-            size="small"
-            sx={{
-              position: 'absolute',
-              right: 8,
-              top: 8,
-              color: (theme) => theme.palette.grey[500],
-            }}
-          >
+    <Dialog
+      open={open}
+      onClose={onClose}
+      maxWidth="sm"
+      fullWidth
+      aria-labelledby={dialogTitleId}
+      // Issue #7: Focus trap disabled - users can tab out to page behind dialog
+      disableEnforceFocus
+      disableAutoFocus
+      // Issue #8: Escape key disabled - keyboard users can't easily dismiss dialog
+      disableEscapeKeyDown
+    >
+      <DialogTitle id={dialogTitleId}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          Select an Icon
+          <IconButton aria-label="Close dialog" onClick={handleCancel} size="small">
             <CloseIcon />
           </IconButton>
-        </DialogTitle>
-      </Box>
+        </Box>
+      </DialogTitle>
       <DialogContent>
         <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 2 }}>
           <Box
@@ -112,18 +135,11 @@ const IconPicker: React.FC<IconPickerProps> = ({ open, onClose, onSelect, select
             }}
             aria-hidden="true"
           >
-            {getIconComponent(selectedIcon || 'Place')}
+            {getIconComponent(tempSelectedIcon)}
           </Box>
-          <Box>
-            <Typography variant="body2" color="text.secondary">
-              Currently selected: <strong>{selectedIcon || 'Place'}</strong>
-            </Typography>
-            <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 0.5 }}>
-              <span className="sr-only">
-                Clicking an icon will select it and close this dialog.
-              </span>
-            </Typography>
-          </Box>
+          <Typography variant="body2" color="text.secondary">
+            Currently selected: <strong>{tempSelectedIcon}</strong>
+          </Typography>
         </Box>
         <Box sx={{ mb: 2 }}>
           <TextField
@@ -141,16 +157,14 @@ const IconPicker: React.FC<IconPickerProps> = ({ open, onClose, onSelect, select
             gridTemplateColumns: 'repeat(auto-fill, minmax(60px, 1fr))',
             gap: 1,
           }}
-          role="group"
-          aria-label={`${filteredIcons.length} icon${filteredIcons.length === 1 ? '' : 's'} available`}
         >
-          {filteredIcons.map((iconName, index) => {
+          {filteredIcons.map((iconName) => {
             const Icon = (MuiIcons as any)[iconName];
-            const isSelected = selectedIcon === iconName;
+            const isSelected = tempSelectedIcon === iconName;
             return (
               <IconButton
                 key={iconName}
-                onClick={() => handleSelect(iconName)}
+                onClick={() => handleIconClick(iconName)}
                 sx={{
                   border: isSelected ? 2 : 1,
                   borderColor: isSelected ? 'primary.main' : 'divider',
@@ -159,8 +173,6 @@ const IconPicker: React.FC<IconPickerProps> = ({ open, onClose, onSelect, select
                 }}
                 aria-label={`${iconName} icon${isSelected ? ' (currently selected)' : ''}`}
                 aria-pressed={isSelected}
-                aria-setsize={filteredIcons.length}
-                aria-posinset={index + 1}
               >
                 {Icon && <Icon />}
               </IconButton>
@@ -168,8 +180,17 @@ const IconPicker: React.FC<IconPickerProps> = ({ open, onClose, onSelect, select
           })}
         </Box>
       </DialogContent>
+      <DialogActions sx={{ px: 3, pb: 2 }}>
+        <Button onClick={handleCancel} variant="outlined">
+          Cancel
+        </Button>
+        {/* eslint-disable-next-line jsx-a11y/no-autofocus */}
+        <Button onClick={handleApply} variant="contained" autoFocus>
+          Apply
+        </Button>
+      </DialogActions>
     </Dialog>
   );
 };
 
-export default IconPicker;
+export default IconPickerInaccessible;

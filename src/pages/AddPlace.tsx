@@ -1,5 +1,5 @@
 import * as MuiIcons from '@mui/icons-material';
-import { Box, Button, Container, IconButton, Paper, TextField, Typography } from '@mui/material';
+import { Box, Button, Container, Paper, TextField, Typography } from '@mui/material';
 import type React from 'react';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -161,20 +161,26 @@ const AddPlace: React.FC = () => {
               Select an icon to represent this place
             </Typography>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-              <IconButton
-                onClick={() => setIconPickerOpen(true)}
+              <Box
                 sx={{
                   border: 1,
                   borderColor: 'divider',
                   borderRadius: 1,
                   width: 56,
                   height: 56,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
-                aria-label={`Current icon: ${icon}. Click to change icon`}
+                aria-hidden="true"
               >
                 {getIconComponent(icon)}
-              </IconButton>
-              <Button variant="outlined" onClick={() => setIconPickerOpen(true)}>
+              </Box>
+              <Button
+                variant="outlined"
+                onClick={() => setIconPickerOpen(true)}
+                aria-label={`Choose icon. Current icon: ${icon}`}
+              >
                 Choose Icon
               </Button>
             </Box>

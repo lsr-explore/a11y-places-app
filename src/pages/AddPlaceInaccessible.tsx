@@ -4,7 +4,7 @@ import type React from 'react';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Breadcrumbs from '../components/Breadcrumbs';
-import IconPicker from '../components/IconPicker';
+import IconPickerInaccessible from '../components/IconPickerInaccessible';
 import type { Place } from '../types/Place';
 import { addPlace, getPlaces, updatePlace } from '../utils/storage';
 
@@ -188,7 +188,7 @@ const AddPlaceInaccessible: React.FC = () => {
         </Box>
         </Paper>
 
-        <IconPicker
+        <IconPickerInaccessible
           open={iconPickerOpen}
           onClose={() => setIconPickerOpen(false)}
           onSelect={setIcon}
