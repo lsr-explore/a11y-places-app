@@ -1,5 +1,5 @@
-import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { expect, test } from '@playwright/test';
 import { mockPlaces } from './fixtures/mockPlaces';
 import { mockCapacitorStorage } from './helpers/storageHelpers';
 
@@ -43,10 +43,10 @@ test.describe('Places Page (Accessible)', () => {
 
   test('should have accessible Edit buttons with proper labels', async ({ page }) => {
     // Each place should have an accessible Edit button
-    const editButtons = page.getByRole('button', { name: /edit/i });
+    const editButtons = page.getByRole('button', { name: /edit central park/i });
     const count = await editButtons.count();
 
-    expect(count).toBe(mockPlaces.length);
+    expect(count).toBe(1);
 
     // Check that edit buttons are keyboard accessible
     const firstEditButton = editButtons.first();

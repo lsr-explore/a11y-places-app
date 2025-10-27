@@ -78,10 +78,8 @@ const IconPicker: React.FC<IconPickerProps> = ({ open, onClose, onSelect, select
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth aria-labelledby={dialogTitleId}>
       <Box sx={{ position: 'relative' }}>
-        <DialogTitle id={dialogTitleId}>
-          <Typography variant="h4" component="h1" gutterBottom>
-            Select an Icon
-          </Typography>
+        <DialogTitle id={dialogTitleId} sx={{ fontSize: '2rem', fontWeight: 'bold' }}>
+          Select an Icon
           <IconButton
             aria-label="Close dialog"
             onClick={onClose}

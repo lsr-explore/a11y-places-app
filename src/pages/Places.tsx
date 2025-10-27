@@ -156,7 +156,7 @@ const Places: React.FC = () => {
             </Button>
             <Button
               variant="outlined"
-              color="warning"
+              color="error"
               startIcon={<DeleteSweepIcon />}
               onClick={handleClearDataClick}
             >
@@ -196,7 +196,7 @@ const Places: React.FC = () => {
                       <Box>
                         <Button
                           ref={editButtonRefs.current[place.id]}
-                          aria-describedby={`place-name-${place.id}`}
+                          aria-labelledby={`edit-label-${place.id} place-name-${place.id}`}
                           onClick={() =>
                             navigate(`/places/edit/${place.id}`, {
                               state: { returnFocusTo: `edit-${place.id}` },
@@ -204,12 +204,11 @@ const Places: React.FC = () => {
                           }
                           size="small"
                         >
-                          Edit
+                          <span id={`edit-label-${place.id}`}>Edit</span>
                         </Button>
                         <IconButton
                           edge="end"
-                          aria-label="Delete"
-                          aria-describedby={`place-name-${place.id}`}
+                          aria-label={`Delete ${place.name}`}
                           onClick={() => handleDelete(place.id)}
                         >
                           <DeleteIcon />
@@ -252,7 +251,7 @@ const Places: React.FC = () => {
             <Button onClick={handleClearDataCancel} variant="outlined">
               Cancel
             </Button>
-            <Button onClick={handleClearDataConfirm} variant="contained" color="warning">
+            <Button onClick={handleClearDataConfirm} variant="contained" color="error">
               Clear All Data
             </Button>
           </DialogActions>

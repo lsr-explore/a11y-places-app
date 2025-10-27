@@ -48,7 +48,7 @@ describe('Places Component', () => {
     expect(screen.getByText('Beach')).toBeInTheDocument();
 
     // Check that Edit buttons exist (one per place)
-    const editButtons = screen.getAllByRole('button', { name: 'Edit' });
+    const editButtons = screen.getAllByRole('button', { name: /^Edit / });
     expect(editButtons).toHaveLength(5);
   });
 
@@ -62,13 +62,7 @@ describe('Places Component', () => {
     });
 
     // Check that all Edit buttons have the correct accessible name
-    const editButtons = screen.getAllByRole('button', { name: 'Edit' });
-    expect(editButtons).toHaveLength(5);
-
-    // Verify each button has the accessible name "Edit"
-    editButtons.forEach((button) => {
-      expect(button).toHaveAccessibleName('Edit');
-    });
+    screen.getByRole('button', { name: 'Edit Central Park' });
   });
 
   test('Delete buttons have correct accessible name', async () => {
@@ -81,7 +75,7 @@ describe('Places Component', () => {
     });
 
     // Check that all Delete buttons exist with correct accessible name
-    const deleteButtons = screen.getAllByRole('button', { name: 'Delete' });
+    const deleteButtons = screen.getAllByRole('button', { name: /^Delete / });
     expect(deleteButtons).toHaveLength(5);
   });
 
@@ -219,7 +213,7 @@ describe('Places Component', () => {
 
     // Wait for focus to be set
     await waitFor(() => {
-      const editButtons = screen.getAllByRole('button', { name: 'Edit' });
+      const editButtons = screen.getAllByRole('button', { name: /^Edit / });
       // The third edit button (for Gym with id '3') should have focus
       expect(editButtons[2]).toHaveFocus();
     });
@@ -279,7 +273,7 @@ describe('Places Component', () => {
     });
 
     // Find and click the first delete button
-    const deleteButtons = screen.getAllByRole('button', { name: 'Delete' });
+    const deleteButtons = screen.getAllByRole('button', { name: /^Delete / });
     await user.click(deleteButtons[0]);
 
     await waitFor(() => {

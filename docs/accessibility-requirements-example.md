@@ -1,0 +1,36 @@
+# This is an example of accessibility requirements for Places page view
+
+## Prompt used
+From the perspective of an accessibility expert, please help me identify accessibility requirements for this screenshot. Please only use W3C WCAG 2.2 A and AA and w3c ARIA documentation for reference. Please output the requirements in a table with the requirement, description please, the applicable WCAG 2.2 Principle name, guideline name and number, success criteria name and number and level and include a note on how to test the requirement. Please do not include any code snippet at this time.
+
+
+ 
+## Accessibility Requirements – Places Page (WCAG 2.2 A / AA)
+
+| # | Requirement | Description / Expectation | WCAG 2.2 Reference | Level | A11y Tools | Manual Testing | How to Test |
+|---|--------------|---------------------------|--------------------|--------|-------------|----------------|-------------|
+| 1 | **Page title & heading identify purpose** | Page must include a meaningful `<title>` and visible heading (“Places”) describing its purpose. | **Perceivable → 2.4 Navigable → 2.4.2 Page Titled / 2.4.6 Headings and Labels** | A / AA | eslint-plugin-jsx-a11y, WAVE, Storybook addon, axe DevTools | Screen reader | Inspect `<title>` and visible heading; confirm they describe page content. |
+| 2 | **Skip to main content** | Provide a “Skip to main content” link as first focusable element so keyboard users can bypass navigation. | **Operable → 2.4 Navigable → 2.4.1 Bypass Blocks** | A | eslint-plugin-jsx-a11y, WAVE, axe DevTools | Keyboard navigation, Screen reader | Tab from top; confirm focus lands on skip link and it jumps correctly. |
+| 3 | **Visible focus indicator** | All interactive elements (Add Place, Edit, Delete) must show a clear visible focus outline. | **Operable → 2.4 Navigable → 2.4.7 Focus Visible** | AA | *No automated tool — manual verification required; linters may detect related issues such as missing focusability or outline suppression.* | Keyboard navigation, Zoom | Tab through all elements; ensure visible focus appears on each. |
+| 4 | **Logical focus order** | Focus order follows the visual reading order (Add Place → Place rows → Edit/Delete). | **Operable → 2.4 Navigable → 2.4.3 Focus Order** | A | *No automated tool — manual verification required; keyboard focus path must be tested manually.* | Keyboard navigation, Screen reader | Tab through elements; confirm order matches visual flow. |
+| 5 | **Focus management – return to last active element** | When canceling dialogs or modals, focus returns to the element that triggered them. | **Operable → 2.4 Navigable / Understandable → 3.2 Predictable → 2.4.3 Focus Order + 3.2.1 On Focus** | A / AA | jest-axe, @axe-core/playwright (partial logic checks only) | Keyboard navigation, Screen reader | Trigger and cancel modal; verify focus returns appropriately. |
+| 6 | **Buttons & controls have accessible names** | “Add Place”, “Edit”, and “Delete” must expose accessible names via visible text or `aria-label`. | **Operable + Robust → 4.1 Compatible → 4.1.2 Name Role Value** | A | eslint-plugin-jsx-a11y, axe DevTools, jest-axe | Screen reader | Inspect accessibility tree; confirm each control has a meaningful name. |
+| 7 | **Icon-only buttons labeled** | Trash icon must include a text label (e.g., `aria-label="Delete place <name>"`). | **Operable + Robust → 4.1 Compatible → 4.1.2 Name Role Value** | A | eslint-plugin-jsx-a11y, axe DevTools | Screen reader | Verify icon buttons are announced with clear function. |
+| 8 | **Consistent identification** | Controls with same function (Edit/Delete) are named and announced consistently. | **Understandable → 3.2 Predictable → 3.2.4 Consistent Identification** | AA | axe DevTools, Storybook addon | Screen reader | Compare announcements of Edit/Delete buttons across list items. |
+| 9 | **Text contrast ratio** | Text (Edit, city names, etc.) must have ≥ 4.5:1 contrast (3:1 for large text). | **Perceivable → 1.4 Distinguishable → 1.4.3 Contrast (Minimum)** | AA | *No automated tool fully accurate — use color contrast analyzer or browser extension.* | Color contrast check, Zoom | Measure text contrast with analyzer. |
+| 10 | **Non-text icon contrast** | Icons (location, trash) must have ≥ 3:1 contrast against background. | **Perceivable → 1.4 Distinguishable → 1.4.11 Non-text Contrast** | AA | *No automated tool fully accurate — requires visual contrast testing.* | Color contrast check | Measure icon contrast using color picker/analyzer. |
+| 11 | **Information not conveyed by color alone** | Interactive text (e.g., Edit) must not rely solely on color; add underline or icon cue. | **Perceivable → 1.4 Distinguishable → 1.4.1 Use of Color** | A | WAVE, axe DevTools (partial) | Color contrast check, Zoom | View in grayscale or color-blind simulator. |
+| 12 | **Keyboard operability for actions** | All actions (Add/Edit/Delete) must be operable via keyboard (Tab/Enter/Space). | **Operable → 2.1 Keyboard Accessible → 2.1.1 Keyboard** | A | @axe-core/playwright (partial logic), jest-axe | Keyboard navigation | Confirm all actions can be triggered using keyboard only. |
+| 13 | **ARIA list structure for places** | Represent the list of places using semantic list (`<ul>/<li>`) or ARIA roles. | **Perceivable + Robust → 1.3 Adaptable / 4.1 Compatible → 1.3.1 Info and Relationships + 4.1.2 Name Role Value** | A | eslint-plugin-jsx-a11y, axe DevTools | Screen reader | Inspect accessibility tree; confirm items are grouped as list. |
+| 14 | **Consistent label for grouped info (city/state)** | Each entry’s name and location are programmatically associated. | **Perceivable → 1.3 Adaptable → 1.3.1 Info and Relationships** | A | jest-axe, axe DevTools | Screen reader | Check that both lines are read together. |
+| 15 | **Programmatic heading hierarchy** | Ensure “Places” is an H1 and sub-sections follow logical heading order. | **Perceivable → 1.3 Adaptable / 2.4 Navigable → 1.3.1 Info and Relationships + 2.4.6 Headings and Labels** | A / AA | eslint-plugin-jsx-a11y, Storybook addon | Screen reader | Inspect DOM headings order and announcement. |
+| 16 | **Status message after add/edit/delete** | Inform assistive tech of changes using `aria-live` regions. | **Robust + Understandable → 4.1 Compatible / 3.3 Input Assistance → 4.1.3 Status Messages** | AA | jest-axe, @axe-core/playwright, axe DevTools | Screen reader | Perform actions; confirm announcements of updates. |
+| 17 | **Target size minimum** | All interactive elements ≥ 24 × 24 CSS px with no overlap. | **Operable → 2.5 Input Modalities → 2.5.8 Target Size (Minimum)** | AA | axe DevTools (partial heuristic check) | Zoom, Keyboard navigation | Measure clickable areas in dev tools. |
+
+---
+
+### Notes
+- Automated tools can **detect missing semantics** or **focusability**, but **cannot verify visual appearance** (focus rings, contrast, etc.).  
+- Always include **manual keyboard and screen-reader testing** in accessibility reviews.  
+- Use **color contrast analyzers** (WebAIM Contrast Checker, axe Color Tool, Chrome DevTools Contrast Checker) for 1.4.x criteria.  
+- Include **jest-axe** and **@axe-core/playwright** in CI for automated WCAG regression coverage.

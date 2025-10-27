@@ -31,11 +31,14 @@ function App() {
   // Check if there's a mock storage API set by tests (e.g., Playwright)
   const storageAPI = (window as any).mockStorageAPI || defaultStorageAPI;
 
+  // Only use basename in production builds (for GitHub Pages)
+  const basename = process.env.NODE_ENV === 'production' ? process.env.PUBLIC_URL : '';
+
   return (
     <StorageContext.Provider value={storageAPI}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Router basename={process.env.PUBLIC_URL}>
+        <Router basename={basename}>
           <Layout>
             <Routes>
               <Route path="/" element={<Home />} />
