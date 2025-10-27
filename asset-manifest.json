@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/a11y-places-app/static/css/main.3a008d3c.css",
-    "main.js": "/a11y-places-app/static/js/main.ae2ff9f1.js",
+    "main.js": "/a11y-places-app/static/js/main.b7d55687.js",
     "static/js/745.32e17dec.chunk.js": "/a11y-places-app/static/js/745.32e17dec.chunk.js",
     "static/js/911.487a4ae3.chunk.js": "/a11y-places-app/static/js/911.487a4ae3.chunk.js",
     "index.html": "/a11y-places-app/index.html",
     "main.3a008d3c.css.map": "/a11y-places-app/static/css/main.3a008d3c.css.map",
-    "main.ae2ff9f1.js.map": "/a11y-places-app/static/js/main.ae2ff9f1.js.map",
+    "main.b7d55687.js.map": "/a11y-places-app/static/js/main.b7d55687.js.map",
     "745.32e17dec.chunk.js.map": "/a11y-places-app/static/js/745.32e17dec.chunk.js.map",
     "911.487a4ae3.chunk.js.map": "/a11y-places-app/static/js/911.487a4ae3.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.3a008d3c.css",
-    "static/js/main.ae2ff9f1.js"
+    "static/js/main.b7d55687.js"
   ]
 }
