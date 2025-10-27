@@ -30,13 +30,7 @@ const Banner = forwardRef<BannerRef, BannerProps>(
             severity={severity}
             variant="filled"
             action={
-              <IconButton
-                ref={closeButtonRef}
-                aria-label="Close"
-                color="inherit"
-                size="small"
-                onClick={onClose}
-              >
+              <IconButton ref={closeButtonRef} color="inherit" size="small" onClick={onClose}>
                 <CloseIcon fontSize="inherit" />
               </IconButton>
             }
@@ -47,6 +41,7 @@ const Banner = forwardRef<BannerRef, BannerProps>(
             role="alert"
             aria-live="polite"
             aria-atomic="true"
+            aria-announce={message}
           >
             {message}
           </Alert>
