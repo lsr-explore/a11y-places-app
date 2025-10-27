@@ -135,6 +135,7 @@ All frontend UI code MUST adhere to:
 - **WAI-ARIA 1.2**: <https://www.w3.org/TR/wai-aria-1.2/>
 
 When creating or modifying components:
+
 - Reference these standards as source of truth
 - Consider WCAG 2.2 new success criteria:
   - 2.4.11 Focus Appearance (Enhanced)

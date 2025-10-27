@@ -2,6 +2,7 @@
   "name": "a11y-places-app",
   "version": "0.1.0",
   "homepage": "https://lsr-explore.github.io/a11y-places-app",
+  "license": "MIT",
   "private": true,
   "dependencies": {
     "@capacitor/cli": "^7.4.4",
