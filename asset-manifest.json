@@ -1,17 +1,19 @@
 {
   "files": {
-    "main.css": "/a11y-places-app/static/css/main.3a008d3c.css",
-    "main.js": "/a11y-places-app/static/js/main.b7d55687.js",
+    "main.css": "/a11y-places-app/static/css/main.4766b31e.css",
+    "main.js": "/a11y-places-app/static/js/main.4fa70f8f.js",
     "static/js/745.32e17dec.chunk.js": "/a11y-places-app/static/js/745.32e17dec.chunk.js",
+    "static/js/629.763b108f.chunk.js": "/a11y-places-app/static/js/629.763b108f.chunk.js",
     "static/js/911.487a4ae3.chunk.js": "/a11y-places-app/static/js/911.487a4ae3.chunk.js",
     "index.html": "/a11y-places-app/index.html",
-    "main.3a008d3c.css.map": "/a11y-places-app/static/css/main.3a008d3c.css.map",
-    "main.b7d55687.js.map": "/a11y-places-app/static/js/main.b7d55687.js.map",
+    "main.4766b31e.css.map": "/a11y-places-app/static/css/main.4766b31e.css.map",
+    "main.4fa70f8f.js.map": "/a11y-places-app/static/js/main.4fa70f8f.js.map",
     "745.32e17dec.chunk.js.map": "/a11y-places-app/static/js/745.32e17dec.chunk.js.map",
+    "629.763b108f.chunk.js.map": "/a11y-places-app/static/js/629.763b108f.chunk.js.map",
     "911.487a4ae3.chunk.js.map": "/a11y-places-app/static/js/911.487a4ae3.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.3a008d3c.css",
-    "static/js/main.b7d55687.js"
+    "static/css/main.4766b31e.css",
+    "static/js/main.4fa70f8f.js"
   ]
 }
