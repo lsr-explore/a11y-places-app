@@ -7,13 +7,13 @@
  * source control but is still discoverable by inspecting the built app.
  */
 
-const MAP_PASSWORD = process.env.REACT_APP_MAP_PASSWORD || 'orchid123';
+const MAP_PASSWORD = process.env.REACT_APP_MAP_PASSWORD || 'zzz';
 
 /**
  * Check if the provided password matches the configured map password
  */
 export const validateMapPassword = (inputPassword: string): boolean => {
-  return inputPassword === MAP_PASSWORD;
+  return MAP_PASSWORD !== 'zzz' && inputPassword === MAP_PASSWORD;
 };
 
 /**
