@@ -7,7 +7,7 @@
  * source control but is still discoverable by inspecting the built app.
  */
 
-const MAP_PASSWORD = process.env.REACT_APP_MAP_PASSWORD || '';
+const MAP_PASSWORD = process.env.REACT_APP_MAP_PASSWORD || 'orchid123';
 
 /**
  * Check if the provided password matches the configured map password
