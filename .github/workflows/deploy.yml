@@ -19,13 +19,20 @@ jobs:
     runs-on: ubuntu-latest
     environment: github-pages  # <-- IMPORTANT: attach to the environment that holds the secrets
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
-      - run: corepack enable && corepack prepare pnpm@latest --activate
-      - run: pnpm install
+
+      - run: pnpm install --frozen-lockfile
 
       # If CRA: keep REACT_APP_*; If Vite: use VITE_* and update code to read import.meta.env.VITE_*
       - name: Build with environment variables
@@ -40,7 +47,8 @@ jobs:
           echo "MAPBOX_TOKEN_PRESENT=$([ -n \"$REACT_APP_MAPBOX_TOKEN\" ] && echo yes || echo no)" >> $GITHUB_STEP_SUMMARY
           echo "MAP_PASSWORD_PRESENT=$([ -n \"$REACT_APP_MAP_PASSWORD\" ] && echo yes || echo no)" >> $GITHUB_STEP_SUMMARY
 
-      - uses: actions/upload-pages-artifact@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
           path: ./build
 
@@ -51,5 +59,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - id: deployment
+      - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
