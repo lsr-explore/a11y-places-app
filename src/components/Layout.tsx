@@ -1,6 +1,7 @@
 import AccessibleIcon from '@mui/icons-material/Accessible';
 import BlockIcon from '@mui/icons-material/Block';
 import HomeIcon from '@mui/icons-material/Home';
+import MapIcon from '@mui/icons-material/Map';
 import MenuIcon from '@mui/icons-material/Menu';
 import {
   AppBar,
@@ -77,6 +78,20 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <AccessibleIcon />
             </ListItemIcon>
             <ListItemText primary="Places" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem key="Map" disablePadding>
+          <ListItemButton
+            onClick={() => {
+              navigate('/map');
+              setDrawerOpen(false);
+            }}
+            aria-label="Navigate to Map"
+          >
+            <ListItemIcon>
+              <MapIcon />
+            </ListItemIcon>
+            <ListItemText primary="Map" />
           </ListItemButton>
         </ListItem>
       </List>

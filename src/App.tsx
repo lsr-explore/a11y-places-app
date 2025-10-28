@@ -4,6 +4,7 @@ import Layout from './components/Layout';
 import AddPlace from './pages/AddPlace';
 import AddPlaceInaccessible from './pages/AddPlaceInaccessible';
 import Home from './pages/Home';
+import Map from './pages/Map';
 import Places from './pages/Places';
 import PlacesInaccessible from './pages/PlacesInaccessible';
 import { StorageContext, type StorageAPI } from './utils/storageApi';
@@ -48,6 +49,7 @@ function App() {
               <Route path="/places-inaccessible" element={<PlacesInaccessible />} />
               <Route path="/places-inaccessible/add" element={<AddPlaceInaccessible />} />
               <Route path="/places-inaccessible/edit/:id" element={<AddPlaceInaccessible />} />
+              <Route path="/map" element={<Map />} />
             </Routes>
           </Layout>
         </Router>
