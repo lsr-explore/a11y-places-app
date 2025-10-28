@@ -2,59 +2,54 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches:
-      - main
-  workflow_dispatch: # Allow manual trigger
+    branches: [ main ]
+  workflow_dispatch:
 
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Allow one concurrent deployment
 concurrency:
-  group: "pages"
+  group: pages
   cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: github-pages  # <-- IMPORTANT: attach to the environment that holds the secrets
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          version: 9
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
+          node-version: 20
           cache: 'pnpm'
+      - run: corepack enable && corepack prepare pnpm@latest --activate
+      - run: pnpm install
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
+      # If CRA: keep REACT_APP_*; If Vite: use VITE_* and update code to read import.meta.env.VITE_*
       - name: Build with environment variables
         env:
           REACT_APP_MAPBOX_TOKEN: ${{ secrets.REACT_APP_MAPBOX_TOKEN }}
           REACT_APP_MAP_PASSWORD: ${{ secrets.REACT_APP_MAP_PASSWORD }}
         run: pnpm run build
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      # Sanity check: don't print secrets, just whether they were non-empty
+      - name: Verify secrets presence (masked)
+        run: |
+          echo "MAPBOX_TOKEN_PRESENT=$([ -n \"$REACT_APP_MAPBOX_TOKEN\" ] && echo yes || echo no)" >> $GITHUB_STEP_SUMMARY
+          echo "MAP_PASSWORD_PRESENT=$([ -n \"$REACT_APP_MAP_PASSWORD\" ] && echo yes || echo no)" >> $GITHUB_STEP_SUMMARY
+
+      - uses: actions/upload-pages-artifact@v3
         with:
           path: ./build
 
   deploy:
     needs: build
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
+      - id: deployment
         uses: actions/deploy-pages@v4
